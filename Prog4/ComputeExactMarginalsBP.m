@@ -24,4 +24,35 @@ M = [];
 % Implement Exact and MAP Inference.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+%create the clique tree and calibrate it
+P=CreateCliqueTree(F,E);
+P=CliqueTreeCalibrate(P,isMax);
+
+
+
+%now get the variables in the clique tree
+V = unique([F(:).var]);
+
+%now iterate thru the variables
+for i = 1 : length(V),
+    %now iterater thru teh cliques in the calibrated tree
+    for j = 1 : length(P.cliqueList)
+        if (~isempty(find(P.cliqueList(j).var == i)))
+            marginalize=setdiff(P.cliqueList(j).var, i);
+            if length(marginalize)==0
+                M{i}=P.cliqueList(j);
+            else
+                mfactor=FactorMarginalization(P.cliqueList(j), marginalize);
+                mfactor.val=mfactor.val/sum(mfactor.val);
+                M{i}=mfactor;
+            end
+            break;
+        end
+    end 
 end
+
+M=[M{1:end}];
+end%close outer
+
+
