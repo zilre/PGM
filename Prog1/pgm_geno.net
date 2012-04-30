@@ -1,0 +1,134 @@
+net
+{
+	node_size = (130.0 55.0);
+	propagationenginegenerator1791944048146838126L = "edu.ucla.belief.approx.BeliefPropagationSettings@897063";
+	recoveryenginegenerator6944530267470113528l = "edu.ucla.util.SettingsImpl@3192a1";
+}
+
+node P2_pheno
+{
+	states = ("affected" "unaffected" );
+	position = (663 -221);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	diagnosistype = "AUXILIARY";
+	label = "parent2_reads";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	ID = "variable5";
+	DSLxSUBMODEL = "Root Submodel";
+}
+node c1_pheno
+{
+	states = ("affected" "unaffected" );
+	position = (443 -366);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	diagnosistype = "AUXILIARY";
+	label = "child_reads";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	ID = "variable6";
+	DSLxSUBMODEL = "Root Submodel";
+}
+node P1_pheno
+{
+	states = ("affected" "unaffected" );
+	position = (172 -205);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	diagnosistype = "AUXILIARY";
+	label = "parent1_reads";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	ID = "variable4";
+	DSLxSUBMODEL = "Root Submodel";
+}
+node P2
+{
+	states = ("AA" "AB" "BB" );
+	position = (530 -113);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	diagnosistype = "AUXILIARY";
+	label = "parent2_geno";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	ID = "variable1";
+	DSLxSUBMODEL = "Root Submodel";
+}
+node variable0
+{
+	states = ("state0" "state1" );
+	position = (439 -19);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	diagnosistype = "AUXILIARY";
+	label = "theta";
+	ID = "variable0";
+	DSLxSUBMODEL = "Root Submodel";
+}
+node P1
+{
+	states = ("AA" "AB" "BB" );
+	position = (324 -126);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	diagnosistype = "AUXILIARY";
+	label = "parent1_geno";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	ID = "variable0";
+	DSLxSUBMODEL = "Root Submodel";
+}
+node C1
+{
+	states = ("AA" "AB" "BB" );
+	position = (444 -252);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	diagnosistype = "AUXILIARY";
+	label = "child_geno";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	ID = "variable2";
+	DSLxSUBMODEL = "Root Submodel";
+}
+potential ( P2_pheno | P2 )
+{
+	data = ((	0.5	0.5	)
+		(	0.5	0.5	)
+		(	0.5	0.5	));
+}
+potential ( c1_pheno | C1 )
+{
+	data = ((	0.5	0.5	)
+		(	0.5	0.5	)
+		(	0.5	0.5	));
+}
+potential ( P1_pheno | P1 )
+{
+	data = ((	0.5	0.5	)
+		(	0.5	0.5	)
+		(	0.5	0.5	));
+}
+potential ( P2 | variable0 )
+{
+	data = ((	0.0	1.0	0.0	)
+		(	0.0	1.0	0.0	));
+}
+potential ( variable0 | )
+{
+	data = (	0.5	0.5	);
+}
+potential ( P1 | variable0 )
+{
+	data = ((	0.5	0.5	0.0	)
+		(	0.5	0.5	0.0	));
+}
+potential ( C1 | P1 P2 )
+{
+	data = (((	0.5	0.5	0.0	)
+		(	0.5	0.5	0.0	)
+		(	0.5	0.5	0.0	))
+		((	0.5	0.5	0.0	)
+		(	0.5	0.5	0.0	)
+		(	0.5	0.5	0.0	))
+		((	0.5	0.5	0.0	)
+		(	0.5	0.5	0.0	)
+		(	0.5	0.5	0.0	)));
+}

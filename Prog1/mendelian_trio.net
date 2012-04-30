@@ -1,0 +1,64 @@
+net
+{
+	node_size = (130.0 55.0);
+	propagationenginegenerator1791944048146838126L = "edu.ucla.belief.approx.BeliefPropagationSettings@65f2be";
+	recoveryenginegenerator6944530267470113528l = "edu.ucla.util.SettingsImpl@23be1a";
+	huginenginegenerator3061656038650325130L = "edu.ucla.belief.inference.JoinTreeSettings@59f6a5";
+}
+
+node parent2_geno
+{
+	states = ("AA" "AB" "BB" );
+	position = (545 -90);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	diagnosistype = "AUXILIARY";
+	label = "parent2";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	ID = "variable8";
+	DSLxSUBMODEL = "Root Submodel";
+}
+node parent1_geno
+{
+	states = ("AA" "AB" "BB" );
+	position = (246 -92);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	diagnosistype = "AUXILIARY";
+	label = "parent1";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	ID = "variable7";
+	DSLxSUBMODEL = "Root Submodel";
+}
+node child_geno
+{
+	states = ("AA" "AB" "BB" );
+	position = (388 -256);
+	excludepolicy = "include whole CPT";
+	ismapvariable = "false";
+	diagnosistype = "AUXILIARY";
+	label = "child";
+	DSLxEXTRA_DEFINITIONxDIAGNOSIS_TYPE = "AUXILIARY";
+	ID = "variable9";
+	DSLxSUBMODEL = "Root Submodel";
+}
+potential ( parent2_geno | )
+{
+	data = (	0.08	0.42	0.5	);
+}
+potential ( parent1_geno | )
+{
+	data = (	0.79	0.19	0.02	);
+}
+potential ( child_geno | parent1_geno parent2_geno )
+{
+	data = (((	1.0	0.0	0.0	)
+		(	0.5	0.5	0.0	)
+		(	0.0	1.0	0.0	))
+		((	0.5	0.5	0.0	)
+		(	0.25	0.5	0.25	)
+		(	0.0	0.5	0.5	))
+		((	0.0	1.0	0.0	)
+		(	0.0	0.5	0.5	)
+		(	0.0	0.0	1.0	)));
+}
