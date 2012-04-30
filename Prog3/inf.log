@@ -1,0 +1,8 @@
+dyld: lazy symbol binding failed: Symbol not found: __ZNSi10_M_extractImEERSiRT_
+  Referenced from: /Users/amit/BC_Classes/PGM-Class/Week3/Prog3/./inference/doinference-mac
+  Expected in: /usr/lib/libstdc++.6.dylib
+
+dyld: Symbol not found: __ZNSi10_M_extractImEERSiRT_
+  Referenced from: /Users/amit/BC_Classes/PGM-Class/Week3/Prog3/./inference/doinference-mac
+  Expected in: /usr/lib/libstdc++.6.dylib
+
