@@ -37,13 +37,26 @@ end;
 
 % initialization
 % you should set them to the correct values in your code
-B.card = [];
-B.val = [];
+B.card = A.card(mapB);
+%B.val(:)=min(A.val);
+for k=1:prod(B.card)
+    B.val(k)=min(A.val);
+end
+%B.val = zeros(1,prod(B.card));
+%B.val=ones(1,prod(B.card)) * -Inf;
+%minimum = min(A.val);
+%B.val = B.val + minimum;
+
+
+assignments = IndexToAssignment(1:length(A.val), A.card);
+indxB = AssignmentToIndex(assignments(:, mapB), B.card);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % YOUR CODE HERE
 % Correctly set up and populate the factor values of B
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+ for i = 1:length(A.val),
+        B.val(indxB(i)) = max(B.val(indxB(i)),A.val(i));
+    end;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 end

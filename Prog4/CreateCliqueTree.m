@@ -11,9 +11,6 @@
 %
 % Copyright (C) Daphne Koller, Stanford University, 2012
 
-function S= isSubset(A, B)
-
-for i=length
 
 
 function P = CreateCliqueTree(F, Evidence)
