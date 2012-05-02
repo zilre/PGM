@@ -40,12 +40,19 @@ for i = 1 : length(V),
     for j = 1 : length(P.cliqueList)
         if (~isempty(find(P.cliqueList(j).var == i)))
             marginalize=setdiff(P.cliqueList(j).var, i);
-            if length(marginalize)==0
+            if isempty(marginalize)
                 M{i}=P.cliqueList(j);
             else
-                mfactor=FactorMarginalization(P.cliqueList(j), marginalize);
-                mfactor.val=mfactor.val/sum(mfactor.val);
-                M{i}=mfactor;
+                if isMax == 0
+                    %we do sum-product
+                    mfactor=FactorMarginalization(P.cliqueList(j), marginalize);
+                    mfactor.val=mfactor.val/sum(mfactor.val);
+                    M{i}=mfactor;
+                else
+                    %we do max-sum
+                    mfactor=FactorMaxMarginalization(P.cliqueList(j),marginalize);
+                    M{i}=mfactor;
+                end
             end
             break;
         end
@@ -53,6 +60,6 @@ for i = 1 : length(V),
 end
 
 M=[M{1:end}];
-end%close outer
+end
 
 

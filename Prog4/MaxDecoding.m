@@ -21,10 +21,15 @@ function A = MaxDecoding( M )
 % you should set it to the correct value in your code
 A = [];
 
+k=length(M); %given k factors
+
+for j=1:k
+    [val,i]=max(M(j).val);
+    A(j)=i;
+    
+end    
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % YOUR CODE HERE
 % Compute the best assignment for variables in the network.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-end
-
