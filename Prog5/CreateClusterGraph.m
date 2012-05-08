@@ -20,6 +20,8 @@
 %
 % Copyright (C) Daphne Koller, Stanford University, 2012
 
+% make a Bethe Cluster graph
+% see Koller and Friedman 11.3.5.2 pg 405
 function P = CreateClusterGraph(F, Evidence)
 P.clusterList = [];
 P.edges = [];
@@ -29,12 +31,45 @@ for j = 1:length(Evidence),
     end;
 end;
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% YOUR CODE HERE
-% 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+P.clusterList=F;
+P.edges=zeros(length(F), length(F) );
+
+%keep track of what position in cluster list are the univariate clusters
+univariateFidx=[];
+%keep track of what position in cluster list are the factor clusters
+factorLayeridx=[];
+for j=1:length(P.clusterList)
+    if length(P.clusterList(j).var) == 1
+        univariateFidx=[univariateFidx j];
+    else
+        factorLayeridx=[factorLayeridx j ];
+    end
+end
+
+%given the node abouve that the factor in F(i) is the same as the one in
+%P.cluserList(i) we use the information from the above for loop that kept
+%track of the indices of the univarate and non-univariate clusters
+%we iterate thru the indixces of where the univariate factors live,
+%checking to see which one of the factor clusters contain them
+%if its non-empty, initiaize the P.edges to be 1 in the (i,j) and (j,i)
+%entry
+
+for j=1:length(univariateFidx)
+    uni_idx=univariateFidx(j);
+    for k=1:length(factorLayeridx)
+        fac_idx=factorLayeridx(k);
+        result=find(P.clusterList(fac_idx).var == P.clusterList(uni_idx).var);
+        if isempty(result) == 0
+            P.edges(uni_idx,fac_idx)=1;
+            P.edges(fac_idx, uni_idx)=1;
+        end
+    end
+end
+
+
+return
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
