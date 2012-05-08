@@ -30,21 +30,21 @@ function [i, j] = NaiveGetNextClusters(P, m)
           m = mod (m, iNumEdges);
     end
     
-    display(m);
+    %display(m);
     total=0;
     for k=1:ncols
         %display(k);
         candidates=find(P.edges(:,k));
-        display([candidates]);
+        %display([candidates]);
         total=total+length(candidates);
         %display(total);
         if (m) < total
-            display(k);
-            display(candidates);
-            display(total);
-            display(m)
+            %display(k);
+            %display(candidates);
+            %display(total);
+            %display(m)
             idx=(total-m);
-            display(idx);
+            %display(idx);
             j=k;
             i=candidates(idx);
             return;
