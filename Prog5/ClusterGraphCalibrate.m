@@ -33,11 +33,7 @@ for m = 1:length(edgeFromIndx),
     i = edgeFromIndx(m);
     j = edgeToIndx(m);
 
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % YOUR CODE HERE
-    %
-    %
-    %
+    
     % Set the initial message values
     % MESSAGES(i,j) should be set to the initial value for the
     % message from cluster i to cluster j
@@ -45,7 +41,11 @@ for m = 1:length(edgeFromIndx),
     % The matlab/octave functions 'intersect' and 'find' may
     % be useful here (for making your code faster)
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    
+    sepset=intersect(P.clusterList(i).var, P.clusterList(j).var);
+    marginalize=setdiff(P.clusterList(i).var, P.clusterList(j).var);
+    factorM=FactorMarginalization(P.clusterList(i), marginalize);
+    factorM.val=ones(1:prod(factorM.card));
+    MESSAGES(i,j)=factorM;
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 end;
@@ -62,7 +62,7 @@ while (1),
     iteration = iteration + 1;
     [i, j] = GetNextClusters(P, MESSAGES,lastMESSAGES, iteration, useSmartMP); 
     prevMessage = MESSAGES(i,j);
-
+    %display([i, j]);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % YOUR CODE HERE
     % We have already selected a message to pass, \delta_ij.
@@ -74,7 +74,35 @@ while (1),
     % obtain some speedup in this function
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-
+    %get the variabls to marginalize over
+    marginalize=setdiff(P.clusterList(i).var, P.clusterList(j).var);
+    %get the sepset variabel
+    sepset=intersect(P.clusterList(i).var, P.clusterList(j).var);
+    
+    %find all the in-coming neighbors messages, except j
+    Nbs=find(P.edges(:,i));
+    Nbs=Nbs(find(Nbs~=j));
+    
+    Nbsfactors=MESSAGES(Nbs,i);
+    if (length(Nbsfactors) == 0)
+	% There are no factors, so create an empty factor list
+        jointNbsFactor = struct('var', [], 'card', [], 'val', []);
+    else
+        jointNbsFactor = Nbsfactors(1);
+        for z = 2:length(Nbsfactors)
+            % Iterate through factors and incorporate them into the joint distribution
+            jointNbsFactor = FactorProduct(jointNbsFactor, Nbsfactors(z));
+        end
+    end
+    %multiply them by the clique factor
+    CliqueNbsProduct= FactorProduct(jointNbsFactor, P.clusterList(i) );
+    
+    %marginalize out variables not in sepst between cluster nodes i and j
+    CliqueMarginal=FactorMarginalization ( CliqueNbsProduct,marginalize );
+    %normalize
+    CliqueMarginal.val= CliqueMarginal.val  /  sum( CliqueMarginal.val);
+    MESSAGES(i,j)=CliqueMarginal;
+    
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
     if(useSmartMP==1)
