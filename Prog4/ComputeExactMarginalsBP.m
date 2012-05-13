@@ -41,7 +41,7 @@ for i = 1 : length(V),
         if (~isempty(find(P.cliqueList(j).var == i)))
             marginalize=setdiff(P.cliqueList(j).var, i);
             if isempty(marginalize)
-                M{i}=P.cliqueList(j);
+                M{i}=P.cliqueList(j); %do we need to normalize? 
             else
                 if isMax == 0
                     %we do sum-product
