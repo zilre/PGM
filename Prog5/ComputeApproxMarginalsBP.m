@@ -18,6 +18,11 @@
 %
 % Copyright (C) Daphne Koller, Stanford University, 2012
 
+
+% You may want to use the helper function 'FindPotentialWithVariable'
+% which is defined at the bottom of this file.  Read through it
+% to make sure you understand its functionality.
+
 function M = ComputeApproxMarginalsBP(F,E)
 
     % returning approximate marginals.
@@ -29,28 +34,26 @@ function M = ComputeApproxMarginalsBP(F,E)
     N = unique([P.clusterList(:).var]);
     
     % compute marginals on each variable
+
     M = repmat(struct('var', 0, 'card', 0, 'val', []), length(N), 1);
 
     % Populate M so that M(i) contains the marginal probability over
     % variable i
     for i = 1:length(N),
-    
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        % YOUR CODE HERE
-        %
-        % Populate M(i) such that M(i) contains a factor representation of
-        % the marginal proability over the variable with index i.
-        % (ie. M(i).val is the actual marginal)
-        %
-        % You may want to use the helper function 'FindPotentialWithVariable'
-        % which is defined at the bottom of this file.  Read through it
-        % to make sure you understand its functionality.
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        
+        %find the index in the cluster list that contains the i_th variable
+        vidx=FindPotentialWithVariable(P,N(i));
+        marginalize=setdiff(P.clusterList(vidx).var, N(i));
+        if isempty(marginalize)
+                M(i)=P.clusterList(vidx);
+                M(i).val=M(i).val/sum(M(i).val);
+        else
+            mfactor=FactorMarginalization(P.clusterList(vidx), marginalize);
+            mfactor.val=mfactor.val/sum(mfactor.val);
+            M(i)=mfactor;
+        end
+        
     end
-
-
 
 return;
 
