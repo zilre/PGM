@@ -54,10 +54,36 @@ LogBS = zeros(1, d);
 % Also you should have only ONE for-loop, as for-loops are VERY slow in matlab
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+r=G.var2factors( V(1) );
+factorsWithVar=cell2mat(r);
+
+
+for z=1:length(factorsWithVar)
+    f=F( factorsWithVar(z) );
+    var_diffs=setdiff(f.var,V(1) );
+    
+    for b=1:length(var_diffs)
+        v=var_diffs(b);
+        e=[setdiff( f.var,V(1) ), A(v)]
+        f_reduced=ObserveEvidence(f,e);
+        GetValueOfAssignment(f_reduced,1)
+    
+    
+end
+
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Re-normalize to prevent underflow when you move back to probability space
 LogBS = LogBS - min(LogBS);
+
+
+end
+
+
+
 
 
 
