@@ -55,24 +55,29 @@ LogBS = zeros(1, d);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 r=G.var2factors( V(1) );
-factorsWithVar=cell2mat(r);
+factoridx=cell2mat(r);
+f=repmat(struct('var', [], 'card', [], 'val', []), 1,length(factoridx) );
 
-
-for z=1:length(factorsWithVar)
-    f=F( factorsWithVar(z) );
-    var_diffs=setdiff(f.var,V(1) );
-    
-    for b=1:length(var_diffs)
-        v=var_diffs(b);
-        e=[setdiff( f.var,V(1) ), A(v)]
-        f_reduced=ObserveEvidence(f,e);
-        GetValueOfAssignment(f_reduced,1)
-    
-    
+for i=1:length(factoridx)
+    idx=factoridx(i);
+    f(i)=F(idx);
 end
 
+%display(f);
+
+varidx= find(f(1).var == V(1) );
+block_card=f(1).card(varidx);
+%display(block_card);
 
 
+for ass=1:block_card
+
+    asses=A;
+    asses(V(1)) =ass;
+    LogBS(1,ass)=LogProbOfJointAssignment(f,asses);
+        
+
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
